@@ -112,12 +112,53 @@ for(i in 1:30) {
 }
 ```
 
+Functions:
+### Kind weird, f is the name of function. The word function must always be used to indicate function
 
+```{r}
+f <- function(num) {
+  for(i in seq_len(num)) {
+    cat("Hello World!\n")
+  }
+}
 
+f(3)
 
+```
 
+Dealing with errors:
 
+```{r}
+print(meaningoflife)
+```
 
+Setting default values to functions. (This allows for a function to be ran without arguments if the statistician prefers to use default values)
+
+```{r}
+f <- function(num = 1) {
+  hello <- "Hello World\n"
+  for(i in seq_len(num)) {
+    cat(hello)
+  }
+  chars <- nchar(hello) * num
+  chars
+}
+
+f(2)
+```
+
+Argument Matching:
+ - Can be listed in order 
+ - Can also use names to specify, then order doesn't matter
+ 
+
+```{r}
+str(rnorm)
+mydata <- rnorm(100, 2, 1)
+#mydata
+sd(mydata)
+#str(sd)
+```
 
 
 

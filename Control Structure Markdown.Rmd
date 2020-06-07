@@ -100,7 +100,7 @@ repeat {
 ```
 
 next, break:
-*Next is used to skip one iteration in a loop
+*Next is used to skip one iteration in a loop*
 
 ```{r}
 

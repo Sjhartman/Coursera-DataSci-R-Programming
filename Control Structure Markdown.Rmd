@@ -1,0 +1,138 @@
+---
+title: "Week 2 Control Structures"
+author: "Me"
+date: "6/6/2020"
+output: html_document
+---
+
+
+If/else intro
+```{r}
+x <- runif(1, 0, 10)
+if(x > 3) {
+  y <- 10
+} else {
+  y <- 0
+}
+print(c(x,y))
+```
+Alternate way to write above if/else command
+
+```{r}
+x <- runif(1, 0, 10)
+y <- if(x > 3) {
+  10
+} else {
+  0
+}
+print(x )
+```
+
+For loops print list:
+
+```{r}
+for (i in 1:10) {
+  print(i)
+}
+```
+For loops print the elements at list indexes:
+
+```{r}
+x <- c('a' ,'b', 'c', 'd')
+
+for (i in 1:4) {
+  print(x[i])
+}
+```
+
+How to print each element of a list:
+
+```{r}
+for(letter in x) {
+  print(letter)
+}
+```
+
+Curly braces aren't necessary for one-line for loops:
+
+```{r}
+for(i in 1:4) print(x[i])
+```
+
+Nested for loops:
+
+```{r}
+x <- matrix(1:6, 2, 3)
+print(x)
+
+for (i in seq_len(nrow(x))) {
+  for(j in seq_len(ncol(x))) {
+    print(x[i,j])
+  }
+}
+```
+
+While Loops:
+
+```{r}
+count <- 0
+while (count < 10) {
+  print(count)
+  count <- count + 1
+}
+```
+
+repeat Loops - repeat loops run forever until a break statement is encountered
+
+```{r}
+x0 <- 1
+tol <- 1e-8
+
+repeat {
+  x1 <- 2
+  
+  if (abs(x1 - x0) < tol) {
+    break
+  } else {
+    x0 <- x1
+  }
+}
+```
+
+next, break:
+*Next is used to skip one iteration in a loop
+
+```{r}
+
+for(i in 1:30) {
+  if(i %% 2 ==0) {
+  next
+  }
+  print(i)
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

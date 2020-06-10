@@ -1,0 +1,133 @@
+---
+title: "Pollution Assignment"
+author: "Me"
+date: "6/8/2020"
+output: html_document
+---
+
+Set working directory
+
+```{r}
+setwd("C:/Users/sjhar/OneDrive/Documents/Educational/Coursera/Data Science Specialization/2 R Programming/Week 2/Prog Assignemnt rprog_data_specdata/specdata")
+getwd()
+```
+
+Part 1
+
+```{r}
+library(stringr) 
+library(readr)
+pollutantmean <- function(directory = 'specdata', pollutant, id = 1:332) {
+    ## collects the files from listed range
+    for(i in 1:length(id)) {
+        id[i] <- paste(str_pad(id[i], 3,"left", '0'),'.csv',sep = '')
+    }
+    print(id)
+    
+    ## reads the files (Currently one at a time)
+    Caterpillar <- c()
+    for(i in id) {
+        TestFile <- read.csv(i)
+        New <- TestFile[pollutant][!is.na(TestFile[pollutant])]
+    Caterpillar <- c(Caterpillar, New)
+    }
+    #print(Caterpillar)
+    print(mean(Caterpillar))
+}
+pollutantmean("specdata", "nitrate")
+```
+
+Part 2
+
+```{r}
+library(stringr) 
+library(readr)
+complete <- function(directory = 'specdata', id = 1:332) {
+    ## collects the files from listed range
+    id_2 <- c()
+    for(i in id) {
+        id_2[i] <- paste(str_pad(i, 3,"left", '0'),'.csv',sep = '')
+    }
+    Final <- data.frame(id = '',nobs = '')
+    for(i in id) {
+        #print(i)
+        TestFile <- read.csv(id_2[i])
+        SulfateCount <- sum(!is.na(TestFile['sulfate']))
+        NitrateCount <- sum(!is.na(TestFile['nitrate']))
+        Summation = SulfateCount 
+        NewVector = c(i, Summation)
+        Final[nrow(Final) + 1,] = NewVector
+    }
+    print(Final[-c(1),])
+}
+RNGversion("3.5.1")  
+set.seed(42)
+cc <- complete("specdata", 332:1)
+use <- sample(332, 10)
+print(cc[use, "nobs"])
+        
+
+```
+
+Part 3
+
+
+```{r}
+library(readr)
+corr <- function(directory = 'specdata', threshold = 0) {
+    ## collects the files from listed range
+    # CSVs <- c('001.csv','002.csv')
+    # CSV <- "001.csv"
+    CSVs <- dir()[str_detect(dir(), '.csv')]
+    Correlations <- c()
+    for(CSV in CSVs) {
+        print(CSV)
+        TestFile <- read_csv(CSV)
+        good <- complete.cases(TestFile)
+        PolishedData <- TestFile[good, ]
+        if(nrow(PolishedData) > threshold) {
+            NewCor <- (cor(PolishedData['sulfate'], PolishedData['nitrate']))
+            print(NewCor)
+            Correlations <- append(Correlations, NewCor)
+            
+        }
+    }
+    print(Correlations)
+}
+# cr <- corr('specdata')
+# head(cr)
+# summary(cr)
+cr <- corr("specdata", 2000)                
+n <- length(cr)                
+cr <- corr("specdata", 1000)                
+cr <- sort(cr)
+print(c(n, round(cr, 4)))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

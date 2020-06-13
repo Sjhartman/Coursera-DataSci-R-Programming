@@ -1,0 +1,104 @@
+---
+title: "Debugging"
+author: "Me"
+date: "6/12/2020"
+output: html_document
+---
+
+Making a series of if statements to try and accomadate multiple data types
+
+
+```{r}
+
+printmessage <- function(x) {
+    if (is.na(x))
+        print("x is na")
+    else if (x>0)
+        print("x is greater than zero")
+    else
+        print("x is less than or equal to zero")
+    invisible(x)
+}
+printmessage(1)
+printmessage(NA)
+printmessage(log(-1))
+```
+********************************************************
+Figuring out what's wrong: traceback()
+
+```{r}
+mean(x)
+```
+Call traceback function after the error message is attained
+```{r}
+traceback()
+```
+traceback #2
+
+```{r}
+lm(y~x)
+```
+
+```{r}
+traceback()
+```
+^^ Indicates that the error was not thrown until the 7th level of the function call stack. For a further analysis of what went wrong we can use the 'debug()' function
+
+**************************************************
+debug() #1
+
+```{r}
+debug(lm)
+lm(y ~ x)
+```
+*************************************************************
+recover()
+TROUBLESHOOTING OPTIONS APPEAR IN THE COMMAND LINE NOT THE MARKDOWN
+
+```{r}
+options(error = recover)
+read.csv('nosuchfile')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

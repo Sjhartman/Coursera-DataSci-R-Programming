@@ -1,0 +1,194 @@
+---
+title: "Loop Functions for Command Line"
+author: "Me"
+date: "6/11/2020"
+output: html_document
+---
+
+****************************************************************
+lapply #1 - note that when using one function as an argument to lapply, the parantheses are not required
+
+```{r}
+x <- list(a = 1:5, b = rnorm(10))
+x
+lapply(x, mean)
+```
+****************************************************************
+lapply #2 - can use it to generate variable lengths of numbers
+
+```{r}
+x = 1:4
+lapply(x, runif)
+
+lapply(x, runif, min = 0, max = 10)
+```
+****************************************************************
+lapply #3 - applying an anonymous function:
+
+```{r}
+x <- list(a = matrix(1:4, 2, 2), b = matrix(1:6, 3, 2))
+lapply(x, function(elt) {elt[,1]})
+
+
+
+```
+****************************************************************
+sapply #1 - Like lapply but sapply tries to simplify the result of lapply(). 
+F
+
+```{r}
+x <- list(a = 1:4, b = rnorm(10), c = rnorm(20, 1), d = rnorm(100, 5))
+sapply(x, mean)
+```
+****************************************************************
+split #1 - Takes a vector or other object and splits it into groups 
+
+```{r}
+str(split)
+```
+^^^ 
+-x is a vector, list or dataframe
+-f is a factor or a list of factors
+-drop indicates if empty factors should be dropped
+
+*bonus - the gl function is used for mapping level and pairs well with the split function.
+
+```{r}
+x <- c(rnorm(10), runif(10), rnorm(10, 1))
+f <- gl(3, 10)
+split(x,f)
+
+```
+
+Split #2
+Can add further complexity to the code by taking the mean on the same line:
+
+```{r}
+lapply(split(x, f), mean)
+
+```
+*** Cool use of split on a large data set***
+Splits airquality dataframe by month
+
+
+```{r}
+library(datasets)
+head(airquality)
+s <- split(airquality, airquality$Month)
+str(s)
+```
+
+Split #3:
+Combing sapply and split for a cleaner output
+
+```{r}
+sapply(s, function(x) {
+    colMeans(x[, c("Ozone", "Solar.R", "Wind")], na.rm = TRUE)
+})
+```
+***********************************************************
+Interactions of the gl function
+
+```{r}
+x <- rnorm(10)
+f1 <- gl(2,5)
+f2 <- gl(5,2)
+f1
+f2
+```
+Now use interact function to combine f1 and f2
+
+```{r}
+interaction(f1, f2)
+```
+
+**********************************************
+tapply - application of a function onto a subset of vectors
+
+
+```{r}
+str(tapply)
+```
+
+```{r}
+set.seed(1)
+x <- c(rnorm(100), runif(100), rnorm(100, 1))
+f <- gl(3, 100)
+tapply(x, f, mean)
+```
+***********************************************
+apply() - function to evaluate a function (usually anonymous) over the margins of an array. For columns, set margin to 2. For rows, set margin to 1.
+
+```{r}
+str(apply)
+```
+
+```{r}
+x <- matrix(rnorm(200, 20, 20),20,10)
+apply(x,2,mean)
+```
+
+```{r}
+apply(x, 1, mean)
+```
+
+Quantiles2 with apply()
+
+```{r}
+x <- matrix(rnorm(200), 20, 10)
+apply(x,1, quantile, probs = c(0.25, 0.75))
+```
+
+**********************************************
+mapply() multivariat apply to iterate over multipl R objects
+
+```{r}
+str(mapply)
+```
+***The two functions below are equivalent
+```{r}
+list(rep(1,4), rep(2,3), rep(3,2), rep(4,1))
+
+mapply(rep, 1:4, 4:1)
+
+
+```
+
+mapply#2
+
+```{r}
+noise <- function(n, mean, sd){
+    rnorm(n, mean, sd)
+}
+noise(5,1,2)
+noise(1:5, 1:5, 2)
+```
+Problem: noise does not read lists well for its argument -> enter mapply
+
+```{r}
+mapply(noise, 1:5, 1:5, 2)
+```
+
+Mapply finds the proper lists for each iteration. This short script would be the same as writing out: list(noise(1, 1, 2), noise(2, 2, 2), noise(3, 3, 2), noise(4, 4, 2), noise(5, 5, 2))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

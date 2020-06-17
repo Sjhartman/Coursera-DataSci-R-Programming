@@ -1,0 +1,144 @@
+---
+title: "Wk 4 Programming Assignment"
+author: "Me"
+date: "6/16/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+install.packages("dplyr")
+setwd('C:/Users/sjhar/OneDrive/Documents/Educational/Coursera/Data Science Specialization/02 R Programming/Week 4 Simulations and Profiling/rprog_data_ProgAssignment3-data')
+getwd()
+library(dplyr)
+```
+
+```{r}
+
+outcome <- read.csv("outcome-of-care-measures.csv", colClasses = 'character')
+head(outcome)
+ncol(outcome)
+names(outcome)
+```
+
+Problem #1 
+
+```{r}
+
+outcome[, 11] <- as.numeric(outcome[, 11])
+hist(outcome[, 11])
+```
+
+Problem 2: Finding the best hospital in the state
+
+```{r}
+best <- function(state, result) {
+    if(result == 'heart attack') result = 11
+    else if(result == 'heart failure') result = 17
+    else if(result == 'pneumonia') result = 23
+    else stop('invalid outcome')
+    # print(result)
+    if(!(state %in% outcome$State)) stop('invalid state')
+    SubsetState <- select(filter(outcome, State == state), 'Hospital.Name')
+    SubsetCondish <- select(filter(outcome, State == state), result)
+    SubsetCondish_test <- sapply(SubsetCondish, function(x) {x != 'Not Available'})
+    SubsetCondish <- SubsetCondish[SubsetCondish_test]
+    SubsetState <- SubsetState[SubsetCondish_test]
+    SubsetCondish <- as.numeric(SubsetCondish)
+    Compare_2 <- data.frame(SubsetCondish, SubsetState)
+    # print(Compare_2)
+    Compare_2 <- arrange(Compare_2, SubsetCondish, SubsetState)
+    # print(Compare_2)
+    print(Compare_2[1,2])
+}
+
+# best("SC", "heart attack")
+
+# best("NY", "pneumonia")
+
+# best("AK", "pneumonia")
+
+
+```
+
+Problem 3 - Ranking hospitals by outcome in a state
+
+```{r}
+rankhospital <- function(state, result, rank) {
+    if(result == 'heart attack') result = 11
+    else if(result == 'heart failure') result = 17
+    else if(result == 'pneumonia') result = 23
+    else stop('invalid outcome')
+    # print(result)
+    if(!(state %in% outcome$State)) stop('invalid state')
+    SubsetState <- select(filter(outcome, State == state), 'Hospital.Name')
+    SubsetCondish <- select(filter(outcome, State == state), result)
+    SubsetCondish_test <- sapply(SubsetCondish, function(x) {x != 'Not Available'})
+    SubsetCondish <- SubsetCondish[SubsetCondish_test]
+    SubsetState <- SubsetState[SubsetCondish_test]
+    SubsetCondish <- as.numeric(SubsetCondish)
+    Compare_2 <- data.frame(SubsetCondish, SubsetState)
+    # print(Compare_2)
+    Compare_2 <- arrange(Compare_2, SubsetCondish, SubsetState)
+    if(rank == 'worst') {rank = dim(Compare_2)[1]}
+    if(rank == 'best') {rank = 1}
+    # print(Compare_2)
+    print(Compare_2[rank,2])
+}
+# rankhospital("MD", "heart attack", "worst")
+# rankhospital("MN", "heart attack", 5000)
+
+# rankhospital("NC", "heart attack", "worst")
+
+# rankhospital("WA", "heart attack", 7)
+
+# rankhospital("TX", "pneumonia", 10)
+
+# rankhospital("NY", "heart attack", 7)
+
+# rankall("heart attack", 4)
+
+rankall("pneumonia", "worst")
+
+
+
+```
+
+Problem 4
+
+```{r}
+
+rankall <- function(condish_inst, rank_all = 'best') {
+    Ans <- data.frame()
+    States <- unique(outcome$State)
+    for(State in States) {
+        NewLine <- c(State, rankhospital(State, condish_inst, rank_all))
+        Ans <- rbind(Ans, NewLine)
+    }
+    Ans <- arrange(Ans, Ans[,1])
+    print(Ans)
+}
+# rankall("heart attack", 20)
+# tail(rankall("pneumonia", "worst"), 3)
+# tail(rankall("heart failure"), 10)
+
+r <- rankall("heart failure", 10)
+ 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

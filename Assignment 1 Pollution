@@ -4,6 +4,11 @@ author: "Me"
 date: "6/8/2020"
 output: html_document
 ---
+## Data: "Specdata" Folder
+## Functions:
+## pollutantmean: finds the mean of pollutant of interest across 332 csv files
+## complete: returns the number of complete enteries across all csv files 
+## corr: Calculates the correlation between sulfate and nitrate levels in each csv sheet with more complete enteries than a specified threshold
 
 Set working directory
 

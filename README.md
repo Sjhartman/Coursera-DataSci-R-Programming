@@ -1,4 +1,4 @@
-# Coursera-DataSci-R-Programming
+# Coursera-DataSci-R-Programming:
 Intro course to R for Coursera's Data Science Specialization from John Hopkins 
 Files:
 - Control structure contains basic operations of if/else operations, and for, while, and repeat loops
